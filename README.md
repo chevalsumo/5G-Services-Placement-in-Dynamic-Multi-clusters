@@ -8,7 +8,6 @@ This project aims to develop an agent using reinforcement learning for the place
 
 3. [**Topology generator**](./topologie_generation/): This folder allows you to generate network topologies using GT-ITM.
 
-4. [**ChatBot**](./ChatBot): This folder contains the code for a chatbot that enables users to select a service type from a catalog using their input phrase.
 
 ## Installation
 
