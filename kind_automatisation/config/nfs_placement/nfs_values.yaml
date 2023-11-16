@@ -1,0 +1,30 @@
+global:
+  n2network:
+    excludeIP: 10.100.53.254
+    gatewayIP: 10.100.53.254
+    subnetIP: 10.100.53.248
+  n3network:
+    excludeIP: 10.100.53.238
+    gatewayIP: 10.100.53.238
+    subnetIP: 10.100.53.232
+  nrf:
+    service:
+      name: nrf-nnrf.orange.svc.clusterset.local
+gnb:
+  amf:
+    n2if:
+      ipAddress: 10.100.53.249
+  n2if:
+    ipAddress: 10.100.53.250
+  n3if:
+    ipAddress: 10.100.53.236
+  resources:
+    limits:
+      cpu: 60m
+      memory: 300Mi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+mongodb:
+  service:
+    name: mongodb.orange.svc.clusterset.local

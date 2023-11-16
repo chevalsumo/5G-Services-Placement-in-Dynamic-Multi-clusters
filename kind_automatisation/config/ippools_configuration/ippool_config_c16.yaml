@@ -1,0 +1,17 @@
+apiVersion: projectcalico.org/v3
+kind: IPPool
+metadata:
+  name: svc-c16
+spec:
+  cidr: 10.126.0.0/16
+  disabled: true
+  natOutgoing: false
+---
+apiVersion: projectcalico.org/v3
+kind: IPPool
+metadata:
+  name: pod-c16
+spec:
+  cidr: 10.246.0.0/16
+  disabled: true
+  natOutgoing: false

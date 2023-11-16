@@ -1,0 +1,57 @@
+bucketweb:
+  enabled: true
+compactor:
+  enabled: true
+minio:
+  accessKey:
+    password: minio
+  auth:
+    rootPassword: minio123
+    rootUser: minio
+  enabled: true
+  monitoringBuckets: thanos
+  secretKey:
+    password: minio123
+objstoreConfig:
+  config:
+    access_key: minio
+    bucket: thanos
+    endpoint: '{{ include "thanos.minio.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local:9000'
+    insecure: true
+    secret_key: minio123
+  type: s3
+query:
+  stores:
+  - pth-c1-kube-prometheus-prometheus-thanos.monitoring.svc.clusterset.local:10901
+  - pth-c2-kube-prometheus-prometheus-thanos.monitoring.svc.clusterset.local:10901
+  - pth-c3-kube-prometheus-prometheus-thanos.monitoring.svc.clusterset.local:10901
+  - pth-c4-kube-prometheus-prometheus-thanos.monitoring.svc.clusterset.local:10901
+  - pth-c5-kube-prometheus-prometheus-thanos.monitoring.svc.clusterset.local:10901
+  - pth-c6-kube-prometheus-prometheus-thanos.monitoring.svc.clusterset.local:10901
+  - pth-c7-kube-prometheus-prometheus-thanos.monitoring.svc.clusterset.local:10901
+  - pth-c8-kube-prometheus-prometheus-thanos.monitoring.svc.clusterset.local:10901
+  - pth-c9-kube-prometheus-prometheus-thanos.monitoring.svc.clusterset.local:10901
+  - pth-c10-kube-prometheus-prometheus-thanos.monitoring.svc.clusterset.local:10901
+  - pth-c11-kube-prometheus-prometheus-thanos.monitoring.svc.clusterset.local:10901
+ruler:
+  alertmanagers:
+  - http://pth-c1-kube-prometheus-alertmanager.monitoring.svc.clusterset.local:9093
+  - http://pth-c2-kube-prometheus-alertmanager.monitoring.svc.clusterset.local:9093
+  - http://pth-c3-kube-prometheus-alertmanager.monitoring.svc.clusterset.local:9093
+  - http://pth-c4-kube-prometheus-alertmanager.monitoring.svc.clusterset.local:9093
+  - http://pth-c5-kube-prometheus-alertmanager.monitoring.svc.clusterset.local:9093
+  - http://pth-c6-kube-prometheus-alertmanager.monitoring.svc.clusterset.local:9093
+  - http://pth-c7-kube-prometheus-alertmanager.monitoring.svc.clusterset.local:9093
+  - http://pth-c8-kube-prometheus-alertmanager.monitoring.svc.clusterset.local:9093
+  - http://pth-c9-kube-prometheus-alertmanager.monitoring.svc.clusterset.local:9093
+  - http://pth-c10-kube-prometheus-alertmanager.monitoring.svc.clusterset.local:9093
+  - http://pth-c11-kube-prometheus-alertmanager.monitoring.svc.clusterset.local:9093
+  config:
+    groups:
+    - name: metamonitoring
+      rules:
+      - alert: PrometheusDown
+        expr: absent(up{prometheus="monitoring/pth"})
+  enabled: true
+storegateway:
+  enabled: true

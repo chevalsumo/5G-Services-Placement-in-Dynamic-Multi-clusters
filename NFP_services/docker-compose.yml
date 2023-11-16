@@ -1,0 +1,93 @@
+version: '3'
+services:
+  # Service for requests generations 
+  requests_gen:
+    restart: always
+    build:
+      context: ./requests_gen
+      dockerfile: Dockerfile
+    container_name: requests_gen
+    environment:
+      - CHARTS_PATH=${CHARTS_PATH}
+    ports: 
+      - 8000:8000
+    command:  uvicorn api:app --reload --host 0.0.0.0 --port 8000
+  # Service for the MLflow Life Cycle Management (LCM) component
+  mlflow_lcm:
+    restart: always
+    build:
+      context: ./mlflow_lcm
+      dockerfile: Dockerfile
+    container_name: mlflow_lcm
+    volumes:
+      # Mount the specified VOLUME_PATH to the WORKING_DIR inside the container
+      - ${VOLUME_PATH}:${WORKING_DIR}
+    working_dir: ${WORKING_DIR}
+    # Start the MLflow server with host 0.0.0.0 and port 5005 to make it accessible externally
+    command: mlflow server --host 0.0.0.0 --port 5005 --gunicorn-opts "--timeout 180"
+    ports:
+      # Map host port 5005 to container port 5005 for accessing MLflow server
+      - 5005:5005
+  # Service for the MLflow Model API Serving (ms) component
+  mlflow_ms_api: 
+    build:
+      context: ./mlflow_ms_api
+      dockerfile: Dockerfile
+    container_name: mlflow_ms_api
+    volumes:
+      # Mount the specified VOLUME_PATH to the WORKING_DIR inside the container
+      - ${VOLUME_PATH}:${WORKING_DIR}
+    working_dir: ${WORKING_DIR}
+    # Start supervisord with the specified configuration file for managing multiple processes inside the container
+    command: python /home/mlflow/scripts/api.py
+    ports:
+      # Map host port 1234 to container port 1234 for accessing the MLflow Model API
+      - 1234:1234
+  mlflow_ms_watch: 
+    build:
+      context: ./mlflow_ms_watch
+      dockerfile: Dockerfile
+    container_name: mlflow_ms_watch
+    volumes:
+      # Mount the specified VOLUME_PATH to the WORKING_DIR inside the container
+      - ${VOLUME_PATH}:${WORKING_DIR}
+    working_dir: ${WORKING_DIR}
+    # Start supervisord with the specified configuration file for managing multiple processes inside the container
+    command: python /home/mlflow/scripts/watch.py
+    ports:
+      # Map host port 1234 to container port 1234 for accessing the MLflow Model API
+      - 1235:1235
+    
+  mongodb:
+    #image: mongo
+    build:
+      context: ./mongoDB
+      dockerfile: Dockerfile
+    container_name: nslicesbdd
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - ${VOLUME_PATH_DB}:/data/db
+    ports:
+      - 27017:27017
+    restart: unless-stopped
+
+  placementmod:
+    build:
+      context: ./placement_module
+      dockerfile: Dockerfile
+    container_name: pm
+    command: uvicorn api:app --reload --host 0.0.0.0 --port 8008 #tail -F /dev/null
+    working_dir : /root/code
+    volumes:
+      - /home/ryad/rl-multi-domain-for-multi-placement/NFP_services/placement_module:/root/code
+      - /home/ryad/rl-multi-domain-for-multi-placement/kind_automatisation/config/clus_params.yaml:/code/clus_params.yaml
+      - ${CHARTS_PATH}:/home/code/charts
+      - /home/ryad/rl-multi-domain-for-multi-placement/kind_automatisation/config/new_broker_config.yaml:/root/.kube/config
+    ports:
+      - 8008:8008
+networks:
+  default:
+    external:
+      name: kind

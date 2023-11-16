@@ -1,0 +1,22 @@
+amf:
+  resources:
+    limits:
+      cpu: 50m
+      memory: 128Mi
+    requests:
+      cpu: 40m
+      memory: 64Mi
+global:
+  amf:
+    n2if:
+      ipAddress: 10.100.61.249
+  n2network:
+    excludeIP: 10.100.61.254
+    gatewayIP: 10.100.61.254
+    subnetIP: 10.100.61.248
+  nrf:
+    service:
+      name: nrf-nnrf.salimou.svc.clusterset.local
+mongodb:
+  service:
+    name: mongodb.salimou.svc.clusterset.local

@@ -1,0 +1,36 @@
+c0:
+  pod_subnet: 10.230.0.0/16
+  service_subnet: 10.110.0.0/16
+c1:
+  pod_subnet: 10.231.0.0/16
+  service_subnet: 10.111.0.0/16
+c10:
+  pod_subnet: 10.240.0.0/16
+  service_subnet: 10.120.0.0/16
+c11:
+  pod_subnet: 10.241.0.0/16
+  service_subnet: 10.121.0.0/16
+c2:
+  pod_subnet: 10.232.0.0/16
+  service_subnet: 10.112.0.0/16
+c3:
+  pod_subnet: 10.233.0.0/16
+  service_subnet: 10.113.0.0/16
+c4:
+  pod_subnet: 10.234.0.0/16
+  service_subnet: 10.114.0.0/16
+c5:
+  pod_subnet: 10.235.0.0/16
+  service_subnet: 10.115.0.0/16
+c6:
+  pod_subnet: 10.236.0.0/16
+  service_subnet: 10.116.0.0/16
+c7:
+  pod_subnet: 10.237.0.0/16
+  service_subnet: 10.117.0.0/16
+c8:
+  pod_subnet: 10.238.0.0/16
+  service_subnet: 10.118.0.0/16
+c9:
+  pod_subnet: 10.239.0.0/16
+  service_subnet: 10.119.0.0/16
